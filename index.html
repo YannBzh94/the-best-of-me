@@ -471,7 +471,7 @@ function buildPrompt(userPrompt, n, ar) {
 SCENE DESCRIPTION:
 ${userPrompt}
 
-OUTPUT: a single photorealistic image, aspect ratio ${ar}, no text, no logo, no watermark, no border.`;
+OUTPUT: a single photorealistic image, aspect ratio ${ar}. No watermark, no border, and no text or logo unless the scene description explicitly asks for typography (then render that exact text cleanly).`;
 }
 
 async function generate() {

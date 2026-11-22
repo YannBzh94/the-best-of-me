@@ -2,7 +2,7 @@
 // Chaque prompt peut être modifié, supprimé ou complété depuis l'appli.
 // "source" crédite le photographe / créateur. « prompt original » = rédigé pour l'appli dans ce style.
 // Augmenter SEED_VERSION ajoute les nouveaux exemples chez les utilisateurs existants sans toucher à leurs prompts.
-window.SEED_VERSION = 2;
+window.SEED_VERSION = 3;
 window.SEED_THEMES = [
   {
     "id": "cinema",
@@ -98,6 +98,12 @@ window.SEED_THEMES = [
     "emoji": "📸",
     "color": "#334155",
     "prompts": [
+      {
+        "id": "studio-echecs-citation",
+        "title": "Échecs & citation (N&B)",
+        "source": "@photo_tvoritel",
+        "text": "Using my uploaded photo as the source, recreate it as a cinematic, photorealistic black-and-white editorial portrait while preserving my identity exactly as in the original image. Keep my face, eyes, eyebrows, eyelashes, skin texture, beard, hairstyle, facial proportions, body shape, and every defining feature completely unchanged and instantly recognizable. Do not beautify, age, stylize, or alter my appearance in any way.\n\nRecreate the composition with me leaning forward over a chessboard, both forearms resting naturally on the table, maintaining direct eye contact with the camera. My expression should be calm, confident, thoughtful, and slightly mysterious, as if I have already anticipated every move. The eyes must be the emotional focal point of the image.\n\nPlace realistic chess pieces in the foreground, heavily blurred by a shallow depth of field, while my face and especially my eyes remain razor-sharp. Use a clean matte-black background with generous negative space on the right side.\n\nLighting should be dramatic low-key studio lighting with a single directional key light, deep shadows, rich monochrome contrast, subtle film grain, realistic skin texture, and a timeless fine-art editorial aesthetic. Capture the image with an 85mm portrait lens, shallow depth of field (around f/1.8), ultra-high detail, realistic optical compression, natural catchlights, and authentic cinematic tonality.\n\nAdd elegant minimalist typography in the empty black space on the right side (approximately x: 85%, y: 21%), vertically centered within the negative space. Use a small luxury serif font in soft white/light gray with generous letter spacing. Above the quote, place a tiny minimalist chess pawn icon with a thin horizontal line extending to each side.\n\nText:\n\nLife is a well-planned game of chess.\nHow you play it\nis entirely up to you.\n\nThe typography should feel subtle, premium, and timeless—similar to a luxury magazine editorial. It must complement the portrait without drawing attention away from the eyes."
+      },
       {
         "id": "studio-nb",
         "title": "Noir & blanc classique",
