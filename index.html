@@ -691,23 +691,35 @@ function openSettings() {
   };
   $("#sReset").onclick = async () => {
     if (!confirm("Ajouter à nouveau les thèmes et exemples d'origine ? Tes thèmes perso sont conservés.")) return;
-    const seed = structuredClone(window.SEED_THEMES);
-    for (const st of seed) {
-      const t = S.themes.find(x => x.id === st.id);
-      if (!t) S.themes.push(st);
-      else st.prompts.forEach(sp => { if (!t.prompts.some(p => p.id === sp.id)) t.prompts.push(sp); });
-    }
-    await saveThemes(); renderThemes(); toast("Thèmes d'origine restaurés");
+    mergeSeed(); await saveThemes(); renderThemes(); toast("Thèmes d'origine restaurés");
   };
 }
 $("#btnSettings").onclick = openSettings;
+
+/* Ajoute les thèmes / exemples d'origine manquants, sans toucher aux prompts existants */
+function mergeSeed() {
+  let n = 0;
+  for (const st of structuredClone(window.SEED_THEMES)) {
+    const t = S.themes.find(x => x.id === st.id);
+    if (!t) { S.themes.push(st); n += st.prompts.length; }
+    else st.prompts.forEach(sp => { if (!t.prompts.some(p => p.id === sp.id)) { t.prompts.push(sp); n++; } });
+  }
+  return n;
+}
 
 /* ---------- Démarrage ---------- */
 (async function init() {
   S.photos = (await DB.get("photos")) || [];
   S.photos.forEach(p => S.selPhotos.add(p.id));
-  S.themes = (await DB.get("themes")) || structuredClone(window.SEED_THEMES);
-  if (!(await DB.get("themes"))) await saveThemes();
+  const stored = await DB.get("themes");
+  S.themes = stored || structuredClone(window.SEED_THEMES);
+  const sv = (await DB.get("seedVersion")) || 1;
+  if (!stored) await saveThemes();
+  else if (sv < (window.SEED_VERSION || 1)) {
+    const n = mergeSeed(); await saveThemes();
+    if (n) setTimeout(() => toast(`${n} nouveaux exemples ajoutés 🎉`), 900);
+  }
+  await DB.set("seedVersion", window.SEED_VERSION || 1);
   S.themeId = S.themes[0]?.id || null;
   S.gallery = ((await DB.all()) || []).sort((a, b) => b.created - a.created);
   renderSlots(); renderThemes(); renderCurrent();
