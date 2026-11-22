@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Best of Me</title>
+<meta name="theme-color" content="#0e0d12">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#0e0d12; --panel:#17161d; --panel2:#201f28; --line:#2c2a36;
+  --text:#f2efe8; --muted:#9a96a6; --gold:#f2c36b; --gold2:#e29a4a; --danger:#ef5b5b;
+  --radius:16px; --nav:68px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom))}
+button,input,textarea,select{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:rgba(14,13,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:.3px;font-size:20px}
+.brand span{background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.iconbtn{background:var(--panel2);border:1px solid var(--line);border-radius:12px;width:42px;height:42px;display:grid;place-items:center;font-size:19px;cursor:pointer}
+main{max-width:720px;margin:0 auto;padding:16px}
+.view{display:none}.view.active{display:block}
+h2{font-size:22px;margin:4px 0 4px}
+.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:700;cursor:pointer;background:var(--panel2);border:1px solid var(--line)}
+.btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1b1408;border:0}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.btn.small{padding:8px 12px;font-size:14px;border-radius:11px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grow{flex:1}
+.full{width:100%}
+/* Photos */
+.slots{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.slot{aspect-ratio:3/4;border-radius:var(--radius);border:2px dashed var(--line);background:var(--panel);display:grid;place-items:center;position:relative;overflow:hidden;cursor:pointer;color:var(--muted);text-align:center;font-size:14px}
+.slot img{width:100%;height:100%;object-fit:cover}
+.slot .del{position:absolute;top:8px;right:8px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:16px;cursor:pointer}
+.slot .plus{font-size:34px;color:var(--gold);display:block}
+.tips{font-size:14px;color:var(--muted);margin:0;padding-left:18px}
+.tips li{margin:3px 0}
+/* Themes */
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:9px 14px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);cursor:pointer;white-space:nowrap;font-size:15px}
+.chip.on{background:var(--text);color:var(--bg);font-weight:700}
+.prompts{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:620px){.prompts{grid-template-columns:repeat(3,1fr)}}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.pthumb{aspect-ratio:4/5;display:grid;place-items:center;font-size:44px;position:relative;cursor:pointer}
+.pthumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.pbody{padding:10px 11px 11px;display:flex;flex-direction:column;gap:6px;flex:1}
+.ptitle{font-weight:700;font-size:15px;line-height:1.25}
+.psrc{font-size:12px;color:var(--gold)}
+.pacts{display:flex;gap:6px;margin-top:auto}
+.pacts .btn{padding:7px 9px;font-size:13px;border-radius:10px}
+.addcard{border:2px dashed var(--line);background:transparent;border-radius:var(--radius);min-height:180px;color:var(--muted);cursor:pointer;font-weight:600}
+/* Create */
+.pick{display:flex;gap:10px;overflow-x:auto}
+.pick label{flex:none;position:relative;cursor:pointer}
+.pick img{width:72px;height:92px;object-fit:cover;border-radius:12px;border:3px solid transparent;opacity:.45;display:block}
+.pick input{position:absolute;opacity:0}
+.pick input:checked + img{border-color:var(--gold);opacity:1}
+textarea,input[type=text],input[type=password],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;outline:none}
+textarea{min-height:170px;resize:vertical;font-size:14px;line-height:1.45}
+textarea:focus,input:focus,select:focus{border-color:var(--gold)}
+label.lbl{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px;font-weight:600}
+.result{margin-top:14px;text-align:center}
+.result img{max-width:100%;border-radius:var(--radius);display:block;margin:0 auto 12px}
+.spinner{width:46px;height:46px;border-radius:50%;border:4px solid var(--line);border-top-color:var(--gold);animation:spin 1s linear infinite;margin:18px auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err{background:#3a1717;border:1px solid #6b2a2a;color:#ffd2d2;border-radius:12px;padding:12px;font-size:14px;text-align:left;white-space:pre-wrap;word-break:break-word}
+.current{display:flex;gap:10px;align-items:center}
+.current .dot{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;flex:none}
+/* Gallery */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.gal img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;cursor:pointer;display:block}
+.empty{color:var(--muted);text-align:center;padding:40px 10px}
+/* Nav */
+nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);
+  background:rgba(23,22,29,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;z-index:6}
+nav button{flex:1;background:none;border:0;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;cursor:pointer}
+nav button b{font-size:21px;font-weight:400}
+nav button.on{color:var(--gold)}
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:20;display:none;align-items:flex-end;justify-content:center}
+.modal.open{display:flex}
+.sheet{background:var(--panel);width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.sheet h3{margin:0 0 6px}
+.viewer img{width:100%;border-radius:14px;display:block}
+.small{font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav) + 16px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-weight:600;font-size:14px;z-index:30;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+a{color:var(--gold)}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">The <span>Best</span> of Me</div>
+  <button class="iconbtn" id="btnSettings" aria-label="Réglages">⚙️</button>
+</header>
+
+<main>
+  <!-- PHOTOS -->
+  <section class="view active" id="v-photos">
+    <h2>Mes photos</h2>
+    <p class="sub">Ajoute de 1 à 4 photos de toi. Elles servent de référence pour ton visage.</p>
+    <div class="slots" id="slots"></div>
+    <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    <div class="card" style="margin-top:14px">
+      <ul class="tips">
+        <li>Visage net, bien éclairé, sans lunettes de soleil.</li>
+        <li>Varie les angles : face, trois-quarts, profil, plan buste.</li>
+        <li>Uniquement des photos de toi, ou de personnes qui ont donné leur accord.</li>
+        <li>Les photos restent sur ton téléphone ; elles ne partent vers l'IA qu'au moment de la génération.</li>
+      </ul>
+    </div>
+    <button class="btn primary full" id="toThemes">Choisir un thème →</button>
+  </section>
+
+  <!-- THEMES -->
+  <section class="view" id="v-themes">
+    <h2>Thèmes</h2>
+    <p class="sub">Choisis une ambiance, puis un exemple. Tu peux ajouter tes propres prompts (ceux des photographes que tu suis).</p>
+    <div class="chips" id="chips"></div>
+    <div class="row" style="margin-bottom:12px" id="themeBar"></div>
+    <div class="prompts" id="prompts"></div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn small" id="btnExport">⬇️ Exporter les thèmes</button>
+      <button class="btn small" id="btnImport">⬆️ Importer</button>
+      <input type="file" id="importInput" accept="application/json,.json" hidden>
+    </div>
+  </section>
+
+  <!-- CREATE -->
+  <section class="view" id="v-create">
+    <h2>Créer</h2>
+    <p class="sub">Vérifie le prompt, ajuste-le si besoin, puis lance la génération.</p>
+    <div class="card">
+      <div class="current" id="currentBox"></div>
+      <label class="lbl">Photos de référence utilisées</label>
+      <div class="pick" id="pick"></div>
+      <label class="lbl" for="promptText">Prompt (modifiable)</label>
+      <textarea id="promptText" placeholder="Choisis un exemple dans Thèmes, ou colle ici un prompt."></textarea>
+      <label class="lbl">Format</label>
+      <div class="chips" id="formats" style="margin-bottom:0"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn primary grow" id="btnGen">✨ Générer mon image</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn small ghost" id="btnSavePrompt">💾 Enregistrer ce prompt dans un thème</button>
+      </div>
+    </div>
+    <div class="result" id="result"></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="view" id="v-gallery">
+    <h2>Galerie</h2>
+    <p class="sub">Toutes tes créations, gardées sur ce téléphone.</p>
+    <div class="gal" id="gal"></div>
+  </section>
+</main>
+
+<nav>
+  <button data-v="photos" class="on"><b>🙂</b>Photos</button>
+  <button data-v="themes"><b>🎨</b>Thèmes</button>
+  <button data-v="create"><b>✨</b>Créer</button>
+  <button data-v="gallery"><b>🖼️</b>Galerie</button>
+</nav>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="themes.js"></script>
+<script>
+"use strict";
+/* ---------- Stockage (IndexedDB) ---------- */
+const DB = (() => {
+  let p;
+  const open = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open("tbom", 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore("kv"); d.createObjectStore("gallery", { keyPath: "id" }); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (store, mode, fn) => {
+    const d = await open();
+    return new Promise((res, rej) => {
+      const t = d.transaction(store, mode); const req = fn(t.objectStore(store));
+      t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+    });
+  };
+  return {
+    get: k => tx("kv", "readonly", s => s.get(k)),
+    set: (k, v) => tx("kv", "readwrite", s => s.put(v, k)),
+    all: () => tx("gallery", "readonly", s => s.getAll()),
+    put: v => tx("gallery", "readwrite", s => s.put(v)),
+    del: id => tx("gallery", "readwrite", s => s.delete(id)),
+  };
+})();
+
+/* ---------- État ---------- */
+const PROVIDERS = {
+  gemini: { name: "Google Gemini (Nano Banana)", model: "gemini-3.1-flash-image", keyUrl: "https://aistudio.google.com/apikey" },
+  openai: { name: "OpenAI (GPT Image)", model: "gpt-image-1", keyUrl: "https://platform.openai.com/api-keys" },
+};
+const FORMATS = [
+  { id: "4:5", label: "Portrait 4:5" }, { id: "9:16", label: "Story 9:16" },
+  { id: "1:1", label: "Carré 1:1" }, { id: "16:9", label: "Paysage 16:9" },
+];
+const S = {
+  photos: [], themes: [], gallery: [],
+  themeId: null, selPhotos: new Set(), format: "4:5",
+  current: null, // {themeId,promptId,title,source}
+  lastResult: null, busy: false,
+  settings: JSON.parse(localStorage.getItem("tbom.settings") || "null") || { provider: "gemini", keys: {}, models: {} },
+};
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const saveThemes = () => DB.set("themes", S.themes);
+const savePhotos = () => DB.set("photos", S.photos);
+const saveSettings = () => localStorage.setItem("tbom.settings", JSON.stringify(S.settings));
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2400); }
+
+/* ---------- Navigation ---------- */
+function go(v) {
+  document.querySelectorAll(".view").forEach(e => e.classList.toggle("active", e.id === "v-" + v));
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  if (v === "create") renderCreate();
+  if (v === "gallery") renderGallery();
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => go(b.dataset.v));
+$("#toThemes").onclick = () => go("themes");
+
+/* ---------- Images ---------- */
+function resizeImage(file, max = 1280, q = .9) {
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = () => {
+      const r = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      res(c.toDataURL("image/jpeg", q));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("Image illisible")); };
+    img.src = url;
+  });
+}
+function shrinkDataUrl(dataUrl, max = 480) {
+  return new Promise(res => {
+    const img = new Image();
+    img.onload = () => {
+      const r = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); res(c.toDataURL("image/jpeg", .82));
+    };
+    img.src = dataUrl;
+  });
+}
+const dataUrlParts = d => { const m = /^data:([^;]+);base64,(.*)$/.exec(d); return { mime: m[1], b64: m[2] }; };
+const dataUrlToBlob = d => { const { mime, b64 } = dataUrlParts(d); const bin = atob(b64); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new Blob([u], { type: mime }); };
+
+/* ---------- Écran Photos ---------- */
+function renderSlots() {
+  const el = $("#slots"); el.innerHTML = "";
+  for (let i = 0; i < 4; i++) {
+    const p = S.photos[i]; const d = document.createElement("div"); d.className = "slot";
+    if (p) {
+      d.innerHTML = `<img src="${p.data}" alt="Photo ${i + 1}"><button class="del" aria-label="Supprimer">✕</button>`;
+      d.querySelector(".del").onclick = e => { e.stopPropagation(); S.photos.splice(i, 1); S.selPhotos.delete(p.id); savePhotos(); renderSlots(); };
+    } else {
+      d.innerHTML = `<div><span class="plus">＋</span>Photo ${i + 1}${i === 0 ? "<br><small>(obligatoire)</small>" : "<br><small>(optionnelle)</small>"}</div>`;
+      d.onclick = () => $("#fileInput").click();
+    }
+    el.appendChild(d);
+  }
+}
+$("#fileInput").onchange = async e => {
+  const files = [...e.target.files].slice(0, 4 - S.photos.length);
+  if (e.target.files.length > files.length) toast("4 photos maximum");
+  for (const f of files) {
+    try { const data = await resizeImage(f); const p = { id: uid(), data }; S.photos.push(p); S.selPhotos.add(p.id); }
+    catch { toast("Une photo n'a pas pu être lue"); }
+  }
+  e.target.value = ""; await savePhotos(); renderSlots();
+};
+
+/* ---------- Écran Thèmes ---------- */
+const curTheme = () => S.themes.find(t => t.id === S.themeId) || S.themes[0];
+function renderThemes() {
+  const chips = $("#chips"); chips.innerHTML = "";
+  S.themes.forEach(t => {
+    const b = document.createElement("button"); b.className = "chip" + (t.id === curTheme()?.id ? " on" : "");
+    b.textContent = `${t.emoji || "✨"} ${t.name}`; b.onclick = () => { S.themeId = t.id; renderThemes(); };
+    chips.appendChild(b);
+  });
+  const add = document.createElement("button"); add.className = "chip"; add.textContent = "＋ Thème"; add.onclick = () => editTheme(); chips.appendChild(add);
+
+  const t = curTheme(); const bar = $("#themeBar"); bar.innerHTML = "";
+  if (!t) { $("#prompts").innerHTML = `<div class="empty">Aucun thème. Crée le premier !</div>`; return; }
+  bar.innerHTML = `<div class="grow small">${t.prompts.length} exemple(s)</div><button class="btn small" id="edT">✎ Modifier le thème</button>`;
+  $("#edT").onclick = () => editTheme(t);
+
+  const grid = $("#prompts"); grid.innerHTML = "";
+  t.prompts.forEach(p => {
+    const c = document.createElement("div"); c.className = "pcard";
+    c.innerHTML = `
+      <div class="pthumb" style="background:linear-gradient(160deg,${t.color || "#444"},#0e0d12)">
+        ${p.thumb ? `<img src="${p.thumb}" alt="">` : `<span>${t.emoji || "✨"}</span>`}
+      </div>
+      <div class="pbody">
+        <div class="ptitle">${esc(p.title)}</div>
+        ${p.source ? `<div class="psrc">${esc(p.source)}</div>` : ""}
+        <div class="pacts">
+          <button class="btn primary grow" data-a="use">Utiliser</button>
+          <button class="btn" data-a="edit" aria-label="Modifier">✎</button>
+        </div>
+      </div>`;
+    c.querySelector(".pthumb").onclick = () => usePrompt(t, p);
+    c.querySelector('[data-a="use"]').onclick = () => usePrompt(t, p);
+    c.querySelector('[data-a="edit"]').onclick = () => editPrompt(t, p);
+    grid.appendChild(c);
+  });
+  const a = document.createElement("button"); a.className = "addcard"; a.innerHTML = "＋<br>Ajouter un prompt";
+  a.onclick = () => editPrompt(t); grid.appendChild(a);
+}
+function usePrompt(t, p) {
+  S.current = { themeId: t.id, promptId: p.id, title: p.title, source: p.source, emoji: t.emoji, color: t.color };
+  $("#promptText").value = p.text; S.lastResult = null; $("#result").innerHTML = "";
+  go("create");
+}
+
+/* ---------- Modales ---------- */
+function openModal(html) { $("#sheet").innerHTML = html; $("#modal").classList.add("open"); }
+function closeModal() { $("#modal").classList.remove("open"); }
+$("#modal").onclick = e => { if (e.target.id === "modal") closeModal(); };
+
+function editTheme(t) {
+  const isNew = !t;
+  openModal(`
+    <h3>${isNew ? "Nouveau thème" : "Modifier le thème"}</h3>
+    <label class="lbl">Nom</label><input type="text" id="mName" value="${esc(t?.name || "")}" placeholder="Ex. Mariage, Business, Hiver…">
+    <div class="row"><div class="grow"><label class="lbl">Emoji</label><input type="text" id="mEmoji" value="${esc(t?.emoji || "✨")}" maxlength="4"></div>
+    <div style="width:110px"><label class="lbl">Couleur</label><input type="color" id="mColor" value="${t?.color || "#6d28d9"}" style="width:100%;height:46px;border:0;background:none"></div></div>
+    <div class="row" style="margin-top:16px">
+      ${isNew ? "" : `<button class="btn danger" id="mDel">Supprimer</button>`}
+      <div class="grow"></div><button class="btn ghost" id="mCancel">Annuler</button><button class="btn primary" id="mOk">OK</button>
+    </div>`);
+  $("#mCancel").onclick = closeModal;
+  $("#mOk").onclick = () => {
+    const name = $("#mName").value.trim(); if (!name) return toast("Donne un nom au thème");
+    if (isNew) { t = { id: uid(), prompts: [] }; S.themes.push(t); }
+    Object.assign(t, { name, emoji: $("#mEmoji").value.trim() || "✨", color: $("#mColor").value });
+    S.themeId = t.id; saveThemes(); closeModal(); renderThemes();
+  };
+  if (!isNew) $("#mDel").onclick = () => {
+    if (!confirm(`Supprimer le thème « ${t.name} » et ses ${t.prompts.length} prompt(s) ?`)) return;
+    S.themes = S.themes.filter(x => x !== t); S.themeId = S.themes[0]?.id || null; saveThemes(); closeModal(); renderThemes();
+  };
+}
+
+function editPrompt(t, p, presetText) {
+  const isNew = !p;
+  const themeOpts = S.themes.map(x => `<option value="${x.id}" ${x.id === t?.id ? "selected" : ""}>${esc(x.emoji)} ${esc(x.name)}</option>`).join("");
+  openModal(`
+    <h3>${isNew ? "Nouveau prompt" : "Modifier le prompt"}</h3>
+    <p class="small">Astuce : sur Instagram, appuie longuement sur le commentaire du photographe → Copier, puis colle-le ici.</p>
+    <label class="lbl">Thème</label><select id="mTheme">${themeOpts}</select>
+    <label class="lbl">Titre</label><input type="text" id="mTitle" value="${esc(p?.title || "")}" placeholder="Ex. Le coup de billard">
+    <label class="lbl">Source / photographe</label><input type="text" id="mSrc" value="${esc(p?.source || "")}" placeholder="Ex. @photo_tvoritel">
+    <label class="lbl">Prompt</label><textarea id="mText" placeholder="Colle ici le prompt…">${esc(p?.text ?? presetText ?? "")}</textarea>
+    ${p?.thumb ? `<div class="row" style="margin-top:8px"><button class="btn small" id="mNoThumb">Retirer la vignette</button></div>` : ""}
+    <div class="row" style="margin-top:16px">
+      ${isNew ? "" : `<button class="btn danger" id="mDel">Supprimer</button>`}
+      <div class="grow"></div><button class="btn ghost" id="mCancel">Annuler</button><button class="btn primary" id="mOk">OK</button>
+    </div>`);
+  $("#mCancel").onclick = closeModal;
+  if (p?.thumb) $("#mNoThumb").onclick = () => { delete p.thumb; saveThemes(); toast("Vignette retirée"); };
+  $("#mOk").onclick = () => {
+    const text = $("#mText").value.trim(), title = $("#mTitle").value.trim();
+    if (!text) return toast("Le prompt est vide");
+    const target = S.themes.find(x => x.id === $("#mTheme").value);
+    if (!target) return toast("Crée d'abord un thème");
+    if (isNew) p = { id: uid() };
+    else if (t !== target) t.prompts = t.prompts.filter(x => x !== p);
+    Object.assign(p, { title: title || "Sans titre", source: $("#mSrc").value.trim(), text });
+    if (!target.prompts.includes(p)) target.prompts.push(p);
+    S.themeId = target.id; saveThemes(); closeModal(); renderThemes();
+    if (presetText !== undefined) { S.current = { themeId: target.id, promptId: p.id, title: p.title, source: p.source, emoji: target.emoji, color: target.color }; renderCurrent(); toast("Prompt enregistré"); }
+  };
+  if (!isNew) $("#mDel").onclick = () => {
+    if (!confirm(`Supprimer « ${p.title} » ?`)) return;
+    t.prompts = t.prompts.filter(x => x !== p); saveThemes(); closeModal(); renderThemes();
+  };
+}
+
+/* Export / import */
+$("#btnExport").onclick = () => {
+  const data = JSON.stringify({ app: "the-best-of-me", version: 1, themes: S.themes.map(t => ({ ...t, prompts: t.prompts.map(({ thumb, ...r }) => r) })) }, null, 2);
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([data], { type: "application/json" }));
+  a.download = "the-best-of-me-themes.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+};
+$("#btnImport").onclick = () => $("#importInput").click();
+$("#importInput").onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try {
+    const j = JSON.parse(await f.text()); const list = Array.isArray(j) ? j : j.themes;
+    if (!Array.isArray(list)) throw 0;
+    let nT = 0, nP = 0;
+    for (const it of list) {
+      if (!it || !it.name || !Array.isArray(it.prompts)) continue;
+      let t = S.themes.find(x => x.name.toLowerCase() === String(it.name).toLowerCase());
+      if (!t) { t = { id: uid(), name: it.name, emoji: it.emoji || "✨", color: it.color || "#6d28d9", prompts: [] }; S.themes.push(t); nT++; }
+      for (const p of it.prompts) {
+        if (!p || !p.text || t.prompts.some(x => x.text === p.text)) continue;
+        t.prompts.push({ id: uid(), title: p.title || "Sans titre", source: p.source || "", text: p.text }); nP++;
+      }
+    }
+    await saveThemes(); renderThemes(); toast(`${nT} thème(s) et ${nP} prompt(s) importés`);
+  } catch { toast("Fichier non reconnu"); }
+};
+
+/* ---------- Écran Créer ---------- */
+function renderCurrent() {
+  const c = S.current;
+  $("#currentBox").innerHTML = c
+    ? `<div class="dot" style="background:${c.color || "#444"}">${c.emoji || "✨"}</div><div><div class="ptitle">${esc(c.title)}</div><div class="psrc">${esc(c.source || "")}</div></div>`
+    : `<div class="dot" style="background:var(--panel2)">✍️</div><div><div class="ptitle">Prompt libre</div><div class="small">Choisis un exemple dans Thèmes ou écris le tien.</div></div>`;
+}
+function renderCreate() {
+  renderCurrent();
+  const pk = $("#pick"); pk.innerHTML = "";
+  if (!S.photos.length) pk.innerHTML = `<div class="small">Aucune photo. <a href="#" id="goP">Ajoute au moins une photo</a>.</div>`;
+  S.photos.forEach(p => {
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox" ${S.selPhotos.has(p.id) ? "checked" : ""}><img src="${p.data}" alt="">`;
+    l.querySelector("input").onchange = e => { e.target.checked ? S.selPhotos.add(p.id) : S.selPhotos.delete(p.id); };
+    pk.appendChild(l);
+  });
+  const gp = $("#goP"); if (gp) gp.onclick = e => { e.preventDefault(); go("photos"); };
+  const fm = $("#formats"); fm.innerHTML = "";
+  FORMATS.forEach(f => {
+    const b = document.createElement("button"); b.className = "chip" + (S.format === f.id ? " on" : ""); b.textContent = f.label;
+    b.onclick = () => { S.format = f.id; renderCreate(); }; fm.appendChild(b);
+  });
+}
+$("#promptText").oninput = () => { if (S.current) S.current.edited = true; };
+$("#btnSavePrompt").onclick = () => {
+  const text = $("#promptText").value.trim(); if (!text) return toast("Le prompt est vide");
+  editPrompt(S.themes.find(t => t.id === S.current?.themeId) || curTheme(), null, text);
+};
+
+function buildPrompt(userPrompt, n, ar) {
+  const ref = n > 1
+    ? `The ${n} attached reference photos all show the same person.`
+    : `The attached reference photo shows the person to feature.`;
+  return `${ref} Use them strictly as identity reference: keep the face, facial features, eye color, skin tone, hairline, hair, age and body build exactly identical and instantly recognizable. Do not copy the background, clothing, lighting or pose of the reference photos unless the description asks for it. Wherever the description says "the man/woman/person in the attached photo", it means this person.
+
+SCENE DESCRIPTION:
+${userPrompt}
+
+OUTPUT: a single photorealistic image, aspect ratio ${ar}, no text, no logo, no watermark, no border.`;
+}
+
+async function generate() {
+  if (S.busy) return;
+  const prov = S.settings.provider, key = S.settings.keys[prov];
+  const model = S.settings.models[prov] || PROVIDERS[prov].model;
+  const photos = S.photos.filter(p => S.selPhotos.has(p.id));
+  const userPrompt = $("#promptText").value.trim();
+  if (!key) { toast("Ajoute d'abord ta clé API"); return openSettings(); }
+  if (!photos.length) return toast("Sélectionne au moins une photo");
+  if (!userPrompt) return toast("Le prompt est vide");
+
+  S.busy = true; $("#btnGen").disabled = true;
+  const res = $("#result");
+  res.innerHTML = `<div class="card"><div class="spinner"></div><div>Création en cours…</div><div class="small">Compte 10 à 60 secondes.</div></div>`;
+  res.scrollIntoView({ behavior: "smooth", block: "center" });
+  const prompt = buildPrompt(userPrompt, photos.length, S.format);
+  try {
+    const img = prov === "openai" ? await callOpenAI(key, model, prompt, photos, S.format) : await callGemini(key, model, prompt, photos, S.format);
+    const item = { id: uid(), created: Date.now(), image: img, prompt: userPrompt, title: S.current?.title || "Prompt libre", source: S.current?.source || "", themeId: S.current?.themeId, promptId: S.current?.promptId, format: S.format, provider: prov, model };
+    await DB.put(item); S.gallery.unshift(item); S.lastResult = item;
+    showResult(item);
+  } catch (e) {
+    res.innerHTML = `<div class="err">⚠️ ${esc(e.message || e)}</div>`;
+  } finally { S.busy = false; $("#btnGen").disabled = false; }
+}
+$("#btnGen").onclick = generate;
+
+async function callGemini(key, model, prompt, photos, ar) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+  const parts = photos.map(p => { const { mime, b64 } = dataUrlParts(p.data); return { inline_data: { mime_type: mime, data: b64 } }; });
+  parts.push({ text: prompt });
+  const body = cfg => JSON.stringify({ contents: [{ role: "user", parts }], generationConfig: cfg });
+  const send = cfg => fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "x-goog-api-key": key }, body: body(cfg) });
+  let r = await send({ responseModalities: ["TEXT", "IMAGE"], imageConfig: { aspectRatio: ar } });
+  if (r.status === 400) { // certains modèles n'acceptent pas imageConfig : on réessaie sans
+    const t = await r.text();
+    if (/imageConfig|aspect/i.test(t)) r = await send({ responseModalities: ["TEXT", "IMAGE"] });
+    else throw new Error(apiError(400, t));
+  }
+  if (!r.ok) throw new Error(apiError(r.status, await r.text()));
+  const j = await r.json();
+  const cand = j.candidates?.[0];
+  const part = cand?.content?.parts?.find(p => p.inlineData || p.inline_data);
+  if (!part) {
+    const txt = cand?.content?.parts?.map(p => p.text).filter(Boolean).join(" ");
+    const why = cand?.finishReason || j.promptFeedback?.blockReason || "";
+    throw new Error(`Aucune image renvoyée${why ? " (" + why + ")" : ""}.${txt ? "\nRéponse du modèle : " + txt : ""}\nEssaie de reformuler le prompt ou d'utiliser d'autres photos.`);
+  }
+  const d = part.inlineData || part.inline_data;
+  return `data:${d.mimeType || d.mime_type || "image/png"};base64,${d.data}`;
+}
+
+async function callOpenAI(key, model, prompt, photos, ar) {
+  const size = { "1:1": "1024x1024", "16:9": "1536x1024" }[ar] || "1024x1536";
+  const fd = new FormData();
+  fd.append("model", model); fd.append("prompt", prompt); fd.append("size", size);
+  photos.forEach((p, i) => fd.append("image[]", dataUrlToBlob(p.data), `ref${i + 1}.jpg`));
+  const r = await fetch("https://api.openai.com/v1/images/edits", { method: "POST", headers: { Authorization: "Bearer " + key }, body: fd });
+  if (!r.ok) throw new Error(apiError(r.status, await r.text()));
+  const j = await r.json(); const b64 = j.data?.[0]?.b64_json;
+  if (!b64) throw new Error("Aucune image renvoyée par OpenAI.");
+  return "data:image/png;base64," + b64;
+}
+
+function apiError(status, txt) {
+  let msg = txt; try { const j = JSON.parse(txt); msg = j.error?.message || txt; } catch {}
+  const hint = status === 401 || status === 403 ? "\n→ Vérifie ta clé API dans les réglages ⚙️."
+    : status === 404 ? "\n→ Le nom du modèle est peut-être obsolète : change-le dans les réglages ⚙️."
+    : status === 429 ? "\n→ Quota atteint ou trop de demandes : réessaie dans un moment, ou vérifie la facturation de ton compte API."
+    : "";
+  return `Erreur ${status} : ${String(msg).slice(0, 400)}${hint}`;
+}
+
+function showResult(item) {
+  const res = $("#result");
+  res.innerHTML = `<div class="card">
+    <img src="${item.image}" alt="Image générée">
+    <div class="row">
+      <button class="btn primary grow" data-a="dl">⬇️ Enregistrer</button>
+      <button class="btn grow" data-a="share">📤 Partager</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn grow" data-a="again">🔁 Nouvelle version</button>
+      ${item.promptId ? `<button class="btn grow" data-a="thumb">🖼️ Vignette du thème</button>` : ""}
+    </div></div>`;
+  bindImgActions(res, item);
+}
+function bindImgActions(root, item) {
+  const q = a => root.querySelector(`[data-a="${a}"]`);
+  q("dl") && (q("dl").onclick = () => downloadImg(item));
+  q("share") && (q("share").onclick = () => shareImg(item));
+  q("again") && (q("again").onclick = generate);
+  q("thumb") && (q("thumb").onclick = async () => {
+    const t = S.themes.find(x => x.id === item.themeId); const p = t?.prompts.find(x => x.id === item.promptId);
+    if (!p) return toast("Prompt introuvable");
+    p.thumb = await shrinkDataUrl(item.image); await saveThemes(); renderThemes(); toast("Vignette mise à jour");
+  });
+}
+function fileName(item) { return `the-best-of-me-${new Date(item.created).toISOString().slice(0, 16).replace(/[:T]/g, "-")}.${item.image.includes("image/jpeg") ? "jpg" : "png"}`; }
+function downloadImg(item) {
+  const a = document.createElement("a"); a.href = URL.createObjectURL(dataUrlToBlob(item.image)); a.download = fileName(item); a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+}
+async function shareImg(item) {
+  const file = new File([dataUrlToBlob(item.image)], fileName(item), { type: dataUrlToBlob(item.image).type });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: "The Best of Me" }); } catch {}
+  } else { downloadImg(item); toast("Partage non disponible : image enregistrée"); }
+}
+
+/* ---------- Galerie ---------- */
+function renderGallery() {
+  const g = $("#gal");
+  if (!S.gallery.length) { g.innerHTML = `<div class="empty" style="grid-column:1/-1">Pas encore de création.<br>Lance-toi depuis l'onglet ✨ Créer.</div>`; return; }
+  g.innerHTML = "";
+  S.gallery.forEach(it => {
+    const im = document.createElement("img"); im.src = it.image; im.alt = it.title; im.loading = "lazy";
+    im.onclick = () => openViewer(it); g.appendChild(im);
+  });
+}
+function openViewer(it) {
+  openModal(`<div class="viewer">
+    <img src="${it.image}" alt="">
+    <div style="margin:12px 0 4px" class="ptitle">${esc(it.title)}</div>
+    <div class="small">${new Date(it.created).toLocaleString("fr-FR")} · ${esc(it.format)} · ${esc(it.model)}</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn primary grow" data-a="dl">⬇️ Enregistrer</button>
+      <button class="btn grow" data-a="share">📤 Partager</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn grow" data-a="reuse">✨ Réutiliser le prompt</button>
+      ${it.promptId ? `<button class="btn grow" data-a="thumb">🖼️ Vignette</button>` : ""}
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn danger grow" data-a="del">🗑️ Supprimer</button>
+      <button class="btn ghost grow" data-a="close">Fermer</button>
+    </div></div>`);
+  const sh = $("#sheet"); bindImgActions(sh, it);
+  sh.querySelector('[data-a="close"]').onclick = closeModal;
+  sh.querySelector('[data-a="reuse"]').onclick = () => {
+    const t = S.themes.find(x => x.id === it.themeId);
+    S.current = { themeId: it.themeId, promptId: it.promptId, title: it.title, source: it.source, emoji: t?.emoji, color: t?.color };
+    $("#promptText").value = it.prompt; S.format = it.format || S.format; $("#result").innerHTML = ""; closeModal(); go("create");
+  };
+  sh.querySelector('[data-a="del"]').onclick = async () => {
+    if (!confirm("Supprimer cette image ?")) return;
+    await DB.del(it.id); S.gallery = S.gallery.filter(x => x.id !== it.id); closeModal(); renderGallery();
+  };
+}
+
+/* ---------- Réglages ---------- */
+function openSettings() {
+  const s = S.settings;
+  const provOpts = Object.entries(PROVIDERS).map(([k, v]) => `<option value="${k}" ${k === s.provider ? "selected" : ""}>${v.name}</option>`).join("");
+  openModal(`
+    <h3>Réglages</h3>
+    <p class="small">L'appli utilise une IA de génération d'images avec ta propre clé API. La clé reste uniquement sur ce téléphone.</p>
+    <label class="lbl">Service d'IA</label><select id="sProv">${provOpts}</select>
+    <label class="lbl">Clé API</label><input type="password" id="sKey" autocomplete="off" placeholder="Colle ta clé ici">
+    <div class="small" style="margin-top:6px">Obtenir une clé : <a id="sLink" target="_blank" rel="noopener"></a></div>
+    <label class="lbl">Modèle</label><input type="text" id="sModel">
+    <div class="small" style="margin-top:6px">Laisse la valeur par défaut, sauf si le service a sorti un nouveau modèle.</div>
+    <div class="row" style="margin-top:18px">
+      <div class="grow"></div><button class="btn ghost" id="sCancel">Annuler</button><button class="btn primary" id="sOk">Enregistrer</button>
+    </div>
+    <div class="row" style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px">
+      <button class="btn small danger" id="sReset">Restaurer les thèmes d'origine</button>
+    </div>`);
+  const fill = () => {
+    const k = $("#sProv").value; $("#sKey").value = s.keys[k] || ""; $("#sModel").value = s.models[k] || PROVIDERS[k].model;
+    $("#sLink").href = PROVIDERS[k].keyUrl; $("#sLink").textContent = PROVIDERS[k].keyUrl.replace("https://", "");
+  };
+  fill(); $("#sProv").onchange = fill;
+  $("#sCancel").onclick = closeModal;
+  $("#sOk").onclick = () => {
+    const k = $("#sProv").value; s.provider = k; s.keys[k] = $("#sKey").value.trim();
+    const m = $("#sModel").value.trim(); if (m && m !== PROVIDERS[k].model) s.models[k] = m; else delete s.models[k];
+    saveSettings(); closeModal(); toast("Réglages enregistrés");
+  };
+  $("#sReset").onclick = async () => {
+    if (!confirm("Ajouter à nouveau les thèmes et exemples d'origine ? Tes thèmes perso sont conservés.")) return;
+    const seed = structuredClone(window.SEED_THEMES);
+    for (const st of seed) {
+      const t = S.themes.find(x => x.id === st.id);
+      if (!t) S.themes.push(st);
+      else st.prompts.forEach(sp => { if (!t.prompts.some(p => p.id === sp.id)) t.prompts.push(sp); });
+    }
+    await saveThemes(); renderThemes(); toast("Thèmes d'origine restaurés");
+  };
+}
+$("#btnSettings").onclick = openSettings;
+
+/* ---------- Démarrage ---------- */
+(async function init() {
+  S.photos = (await DB.get("photos")) || [];
+  S.photos.forEach(p => S.selPhotos.add(p.id));
+  S.themes = (await DB.get("themes")) || structuredClone(window.SEED_THEMES);
+  if (!(await DB.get("themes"))) await saveThemes();
+  S.themeId = S.themes[0]?.id || null;
+  S.gallery = ((await DB.all()) || []).sort((a, b) => b.created - a.created);
+  renderSlots(); renderThemes(); renderCurrent();
+  if (!S.settings.keys[S.settings.provider]) setTimeout(() => toast("Pense à ajouter ta clé API dans ⚙️"), 800);
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>
