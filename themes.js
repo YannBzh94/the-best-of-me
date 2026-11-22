@@ -2,7 +2,7 @@
 // Chaque prompt peut être modifié, supprimé ou complété depuis l'appli.
 // "source" crédite le photographe / créateur. « prompt original » = rédigé pour l'appli dans ce style.
 // Augmenter SEED_VERSION ajoute les nouveaux exemples chez les utilisateurs existants sans toucher à leurs prompts.
-window.SEED_VERSION = 4;
+window.SEED_VERSION = 5;
 window.SEED_THEMES = [
   {
     "id": "cinema",
@@ -127,6 +127,12 @@ window.SEED_THEMES = [
         "title": "Profil noir & blanc",
         "source": "Tendance Instagram (prompt original)",
         "text": "Hyper-realistic black and white studio portrait of the person in the attached photo in strict side profile against a pure black background. A single narrow strip light outlines the forehead, nose, lips and jawline. Calm, eyes looking straight ahead. Fine-art style, deep blacks, crisp detail in the skin and hair, ultra-photorealistic, profile faithful to the reference."
+      },
+      {
+        "id": "studio-closeup",
+        "title": "Gros plan incliné (à compléter)",
+        "source": "@ai_photos_prompt_000",
+        "text": "Preserve the original person's identity, face, and physical features with high likeness. Do not alter their face. Apply the following style: An extreme close-up headshot, angled slightly upwards from eye-level, focusing on the subject's face from mid-forehead to just below the lips, with parts of the shoulders and collarbone visible on the lower left. Apply a slender and delicate build to the subject. The subject's head is tilted significantly towards their right (viewer's left).\n\n[SUITE À COMPLÉTER : le prompt original continue sur la publication]"
       }
     ]
   },
@@ -282,6 +288,43 @@ window.SEED_THEMES = [
         "title": "Fond rouge intense",
         "source": "Tendance Instagram (prompt original)",
         "text": "Bold studio portrait of the person in the attached photo, chest up, against a deep saturated red background. Black turtleneck. Hard key light from one side sculpting the face, strong shadow on the other side, subtle rim light. Direct, intense gaze into the lens. Minimal, graphic, high-end editorial style, ultra-photorealistic, natural skin texture."
+      }
+    ]
+  },
+  {
+    "id": "typo",
+    "name": "Affiches typo",
+    "emoji": "🔤",
+    "color": "#475569",
+    "prompts": [
+      {
+        "id": "typo-x",
+        "title": "Portrait dans un X",
+        "source": "@bibi_syedaa",
+        "text": "Ultra-minimalist typographic portrait poster on a clean light-gray (#efefef) background. Create a compact geometric capital X centered on the canvas. The X is NOT elongated or stretched; it consists of four separate thick diagonal geometric segments with flat horizontal ends, forming a short, wide, perfectly balanced modern X with large negative space between segments and a tight precise center crossing. The X acts as a photo mask containing a realistic young woman portrait. Face perfectly centered in the X intersection; left eye visible inside the upper-left section, right eye visible inside the upper-right section, nose and lips aligned exactly in the center crossing, hair flowing naturally through upper sections, white shirt visible in lower sections, soft natural daylight, neutral facial expression, looking directly into camera. Hands originate from INSIDE the portrait image, not outside the frame. Only fingers and small portions of the hands cross over the white edges of the X. Upper-right hand emerges from inside the upper-right portrait section and gently hooks over the side-right X segment edge with fingers naturally resting on the white surface as if gripping the X. Lower-left hand emerges from inside the lower-left portrait section and lightly hangs over the bottom-left X segment edge with fingers touching only the white background outside the mask. Realistic layer-over-mask effect, subtle shadows beneath fingers, no floating hands, no arms outside the X, hands naturally attached to the body inside the portrait. X geometry features thick diagonal bars, flat horizontal cut ends, wide trapezoid-like sections, compact proportions, luxury typography poster style, clean geometric symmetry, no thin or elongated X, no road-like strips, no hollow interior border. Typography is very small uppercase sans-serif with wide tracking: left side 'LETTER PORTRAIT', right side 'PHOTOSHOP TUTORIAL'. Light gray typography, subtle and minimal. Style: Swiss graphic design, luxury editorial poster, negative space, geometric masking, professional Photoshop artwork, realistic portrait photography, premium branding aesthetic, ultra-clean composition. 4:5 vertical format, centered layout, ultra-sharp 4K, realistic skin, realistic fingers, precise geometric X matching a modern letter-mask poster design.",
+        "format": "4:5"
+      },
+      {
+        "id": "typo-p",
+        "title": "Caché derrière le P",
+        "source": "@bibi_syedaa",
+        "text": "Ultra-minimalist typographic portrait poster featuring a large uppercase serif letter \"P\" centered on a clean light-gray background (#f2f2f2). The letter P is thick, elegant, and occupies approximately 80% of the canvas height, acting as both a portrait frame and interaction element. A realistic smiling young woman is positioned behind the vertical opening of the P, naturally leaning out from inside the letter, with her upper body and face extending beyond the inner opening while remaining connected to the space behind the typography. She peeks playfully from behind the vertical stem of the P with her head slightly tilted toward the viewer, looking directly into the camera with a bright genuine smile. Her long straight brown hair falls naturally over her left shoulder, and she wears a light blue denim shirt. One hand grips the upper inner edge of the P from behind while the second hand grips the middle inner edge, with fingers wrapping naturally around the letter as if she is peeking out from behind it. Hands must appear realistically attached to the body and emerging from behind the letter, never floating, with convincing depth and layering. The letter P features elegant serif typography in a soft pastel blue-gray color, a thick vertical stem, a rounded upper-right bowl, smooth curves, and refined editorial styling. Typography layout includes the word \"LETTER\" at the top center and \"PORTRAIT\" at the bottom center, both in black uppercase sans-serif with very wide letter spacing for a clean luxury editorial aesthetic. Composition is perfectly centered with generous negative space, Swiss design influence, minimalist typography poster styling, premium branding aesthetics, soft studio lighting, subtle shadows for depth, ultra-clean edges, and professional Photoshop typography artwork. Color palette consists of a light gray-white background, muted pastel blue-gray letter P, black typography, and natural skin tones. Photorealistic quality, ultra-sharp details, realistic hands gripping the letter, realistic facial expression, luxury typography poster appearance, modern graphic design showcase, and 4K high-resolution square composition.",
+        "format": "1:1"
+      }
+    ]
+  },
+  {
+    "id": "fetes",
+    "name": "Fêtes & tradition",
+    "emoji": "🪔",
+    "color": "#7e22ce",
+    "prompts": [
+      {
+        "id": "fetes-diwali",
+        "title": "Sari de Diwali (à compléter)",
+        "source": "@ai_photos_prompt_000",
+        "text": "Create an ultra-photorealistic, premium-quality Indian traditional festive fashion portrait in vertical 4:5 aspect ratio, 8K Ultra HD resolution (4320 × 5400 pixels). Feature a beautiful young adult Indian woman celebrating Diwali in a warm, luxurious, beautifully decorated festive setting.\n\nAppearance & Hairstyle: STRICT FACE PRESERVATION: If using an uploaded reference photo, preserve the person's exact facial identity with maximum possible accuracy. Maintain the original facial structure, face shape, eyes, eyebrows, nose, lips, skin tone, natural skin texture, and distinctive facial features. Do not alter, beautify, reshape, or replace the face. Style her long, naturally dark\n\n[SUITE À COMPLÉTER : le prompt original continue sur la publication]",
+        "format": "4:5"
       }
     ]
   }
