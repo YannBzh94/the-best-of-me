@@ -151,8 +151,12 @@ a{color:var(--gold)}
       <label class="lbl">Format</label>
       <div class="chips" id="formats" style="margin-bottom:0"></div>
       <div class="row" style="margin-top:14px">
-        <button class="btn primary grow" id="btnGen">✨ Générer mon image</button>
+        <button class="btn primary grow" id="btnFree">🆓 Envoyer à Gemini (gratuit)</button>
       </div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn grow" id="btnGen">✨ Générer ici (clé API)</button>
+      </div>
+      <p class="small" style="margin:8px 2px 0">Gratuit : tes photos et le prompt sont envoyés ensemble à l'appli Gemini (ou ChatGPT) ; tu n'as qu'à la choisir dans la liste de partage.</p>
       <div class="row" style="margin-top:8px">
         <button class="btn small ghost" id="btnSavePrompt">💾 Enregistrer ce prompt dans un thème</button>
       </div>
@@ -476,7 +480,7 @@ async function generate() {
   const model = S.settings.models[prov] || PROVIDERS[prov].model;
   const photos = S.photos.filter(p => S.selPhotos.has(p.id));
   const userPrompt = $("#promptText").value.trim();
-  if (!key) { toast("Ajoute d'abord ta clé API"); return openSettings(); }
+  if (!key) { toast("Pas de clé API : utilise le bouton gratuit 🆓, ou ajoute une clé dans ⚙️"); return; }
   if (!photos.length) return toast("Sélectionne au moins une photo");
   if (!userPrompt) return toast("Le prompt est vide");
 
@@ -495,6 +499,42 @@ async function generate() {
   } finally { S.busy = false; $("#btnGen").disabled = false; }
 }
 $("#btnGen").onclick = generate;
+
+/* ---------- Mode gratuit : partage photos + prompt vers l'appli Gemini ---------- */
+async function shareToAI() {
+  const photos = S.photos.filter(p => S.selPhotos.has(p.id));
+  const userPrompt = $("#promptText").value.trim();
+  if (!photos.length) return toast("Sélectionne au moins une photo");
+  if (!userPrompt) return toast("Le prompt est vide");
+  const full = "Génère une image à partir de mes photos jointes.\n\n" + buildPrompt(userPrompt, photos.length, S.format);
+  // 1) Copie du prompt (filet de sécurité si l'appli cible ne reprend pas le texte)
+  let copied = false;
+  try { await navigator.clipboard.writeText(full); copied = true; } catch {}
+  // 2) Partage des photos + du texte en une seule fois
+  const files = photos.map((p, i) => new File([dataUrlToBlob(p.data)], `photo-${i + 1}.jpg`, { type: "image/jpeg" }));
+  if (navigator.canShare && navigator.canShare({ files })) {
+    try {
+      await navigator.share({ files, text: full, title: "The Best of Me" });
+      toast(copied ? "Si le texte n'apparaît pas dans Gemini : appui long → Coller" : "Partage effectué");
+      setTimeout(showFreeHelp, 400);
+    } catch (e) { if (e && e.name !== "AbortError") toast("Partage impossible : " + e.message); }
+  } else {
+    toast(copied ? "Partage de fichiers non disponible : prompt copié, joins tes photos dans Gemini" : "Partage non disponible sur ce navigateur");
+  }
+}
+function showFreeHelp() {
+  if (localStorage.getItem("tbom.freehelp")) return;
+  openModal(`<h3>Dans l'appli Gemini</h3>
+    <ul class="tips" style="color:var(--text)">
+      <li>Tes photos sont déjà jointes et le prompt est collé : appuie sur Envoyer.</li>
+      <li>Si le texte manque : appui long dans la zone de saisie → <b>Coller</b> (il est dans ton presse-papiers).</li>
+      <li>Une fois l'image créée : appui long dessus → Télécharger. Tu peux ensuite la mettre en vignette du thème depuis ta galerie de photos.</li>
+    </ul>
+    <div class="row" style="margin-top:14px"><button class="btn ghost" id="hNo">Ne plus afficher</button><div class="grow"></div><button class="btn primary" id="hOk">OK</button></div>`);
+  $("#hOk").onclick = closeModal;
+  $("#hNo").onclick = () => { localStorage.setItem("tbom.freehelp", "1"); closeModal(); };
+}
+$("#btnFree").onclick = shareToAI;
 
 async function callGemini(key, model, prompt, photos, ar) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
@@ -671,7 +711,6 @@ $("#btnSettings").onclick = openSettings;
   S.themeId = S.themes[0]?.id || null;
   S.gallery = ((await DB.all()) || []).sort((a, b) => b.created - a.created);
   renderSlots(); renderThemes(); renderCurrent();
-  if (!S.settings.keys[S.settings.provider]) setTimeout(() => toast("Pense à ajouter ta clé API dans ⚙️"), 800);
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
 </script>
