@@ -338,7 +338,7 @@ function renderThemes() {
 }
 function usePrompt(t, p) {
   S.current = { themeId: t.id, promptId: p.id, title: p.title, source: p.source, emoji: t.emoji, color: t.color };
-  $("#promptText").value = p.text; S.lastResult = null; $("#result").innerHTML = "";
+  $("#promptText").value = p.text; if (p.format) S.format = p.format; S.lastResult = null; $("#result").innerHTML = "";
   go("create");
 }
 

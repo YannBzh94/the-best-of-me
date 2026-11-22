@@ -2,7 +2,7 @@
 // Chaque prompt peut être modifié, supprimé ou complété depuis l'appli.
 // "source" crédite le photographe / créateur. « prompt original » = rédigé pour l'appli dans ce style.
 // Augmenter SEED_VERSION ajoute les nouveaux exemples chez les utilisateurs existants sans toucher à leurs prompts.
-window.SEED_VERSION = 3;
+window.SEED_VERSION = 4;
 window.SEED_THEMES = [
   {
     "id": "cinema",
@@ -234,6 +234,13 @@ window.SEED_THEMES = [
     "emoji": "🔥",
     "color": "#be185d",
     "prompts": [
+      {
+        "id": "tend-minecraft",
+        "title": "Game over dans la neige",
+        "source": "@photo_tvoritel",
+        "text": "Use 100% of the face and body from my reference image. Create a cinematic top-down winter scene inspired by a Minecraft death screen. The person is lying spread out on snow, wearing casual winter clothes, realistic pose, cold atmospheric lighting, slightly desaturated tones, footprints visible in the snow. Surround the person with floating or placed pixelated Minecraft-style items including a diamond sword, bow, pickaxe, emerald, steak, Ender Eye, music disc, and spider mob. Add a realistic Minecraft 'You died!' game over overlay at the top with pixel font, including 'Score: 0', crosshair symbol, and two retro UI buttons labeled 'Respawn' and 'Title screen'. Blend realistic photography with pixel-art game elements naturally. Soft shadows, moody winter aesthetic, ultra detailed, vertical composition, DSLR realism, subtle depth of field, high contrast, 9:16 ratio.\n\nNegative prompt (avoid): low quality, blurry face, distorted body, extra limbs, wrong facial features, cartoon body, unrealistic.",
+        "format": "9:16"
+      },
       {
         "id": "tend-taxi",
         "title": "Taxi sous la pluie",
