@@ -2,7 +2,7 @@
 // Chaque prompt peut être modifié, supprimé ou complété depuis l'appli.
 // "source" crédite le photographe / créateur. « prompt original » = rédigé pour l'appli dans ce style.
 // Augmenter SEED_VERSION ajoute les nouveaux exemples chez les utilisateurs existants sans toucher à leurs prompts.
-window.SEED_VERSION = 7;
+window.SEED_VERSION = 8;
 window.SEED_THEMES = [
   {
     "id": "cinema",
@@ -472,6 +472,173 @@ window.SEED_THEMES = [
         "title": "Chaleureux & lumineux",
         "source": "@leesiefken",
         "text": "Create a warm, approachable professional portrait of the person in the uploaded reference photo. Preserve their exact facial features, age, skin texture, body proportions, and natural asymmetry.\n\nThe subject stands comfortably with relaxed shoulders and a slight lean towards the camera. Expression is friendly, genuine, and confident.\n\nWardrobe: light beige blazer with a soft blue shirt. Background: elegant neutral interior with shallow depth of field. Lighting: natural window light with soft highlights and realistic skin tones.\n\nPhotographed on a Canon EOS R5 with an 85mm lens. Visible skin texture, realistic eyes, authentic smile, subtle imperfections, premium corporate photography. No beauty filters, no excessive retouching, no text, no logos, no facial changes."
+      }
+    ]
+  },
+  {
+    "id": "essentiels",
+    "name": "Essentiels (à compléter)",
+    "emoji": "🧰",
+    "color": "#0f766e",
+    "prompts": [
+      {
+        "id": "ess-dslr",
+        "title": "Mode photographe DSLR",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en un portrait professionnel façon DSLR. Garde mon visage, ma structure faciale, mon teint, ma coiffure et mon identité reconnaissables et naturels. Place-moi dans [lieu] avec un éclairage réaliste, une texture de peau naturelle, une faible profondeur de champ, une séparation subtile de l'arrière-plan, une perspective d'objectif réaliste, une composition professionnelle et des détails photographiques authentiques.\nFais en sorte que cela ressemble à une vraie photo prise par un photographe professionnel, pas à une image générée par une IA."
+      },
+      {
+        "id": "ess-cinema",
+        "title": "Séance photo cinématique",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en une séance photo professionnelle et cinématographique. Place-moi dans [scène] avec un éclairage dramatique mais réaliste, des ombres naturelles, une faible profondeur de champ, un flou d'arrière-plan subtil, une composition cinématographique, une texture de peau réaliste, des vêtements détaillés et un étalonnage des couleurs professionnel. Garde mon identité et mes traits du visage cohérents. L'image finale doit ressembler à une véritable photo issue d'une séance photo cinématographique haut de gamme."
+      },
+      {
+        "id": "ess-insta-luxe",
+        "title": "Instagram luxe",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en une photo lifestyle premium adaptée à un profil Instagram haut de gamme.\nPlace-moi dans [lieu de luxe], portant [tenue], avec un éclairage sophistiqué, des détails environnementaux réalistes, une pose naturelle, une composition professionnelle, une faible profondeur de champ et une texture de peau authentique.\nFais en sorte que cela paraisse cher et éditorial sans que l'image ait l'air artificielle ou trop retouchée."
+      },
+      {
+        "id": "ess-voyage",
+        "title": "Influenceur voyage",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en une véritable photo de voyage professionnelle et authentique prise à [destination].\nGarde mon visage et mon identité reconnaissables tout en m'intégrant naturellement dans le décor.\nAdapte l'éclairage, les ombres, la perspective, la météo, les vêtements et l'environnement de manière réaliste.\nUtilise une composition typique de la photographie de voyage professionnelle, avec une profondeur de champ réaliste, des couleurs naturelles, des détails soignés et une séparation subtile de l'arrière-plan."
+      },
+      {
+        "id": "ess-magazine",
+        "title": "Couverture de magazine",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en une photographie éditoriale de mode haut de gamme.\nGarde mon identité reconnaissable et naturelle. Donne-moi une pose sophistiquée, [tenue/style], un éclairage de studio ou éditorial professionnel, une texture de peau réaliste, des ombres soigneusement contrôlées, une composition premium, une faible profondeur de champ et un étalonnage des couleurs élégant mais naturel.\nFais en sorte que cela ressemble à une véritable photo de mode prise par un photographe professionnel pour un grand magazine."
+      },
+      {
+        "id": "ess-restaurer",
+        "title": "Restaurer une ancienne photo",
+        "source": "@ia.boss.officiel",
+        "text": "Restaure et transforme ma photo téléchargée en un portrait moderne et professionnel.\nPréserve mes traits réels, mon identité et mes caractéristiques naturelles tout en améliorant l'éclairage, la composition, la netteté, les détails de la peau, l'exposition, l'arrière-plan et la qualité photographique globale.\nFais en sorte que cela ressemble à une photo originale prise aujourd'hui avec un appareil photo professionnel et un objectif portrait de haute qualité."
+      },
+      {
+        "id": "ess-lieu",
+        "title": "Change ton lieu",
+        "source": "@ia.boss.officiel",
+        "text": "Garde-moi exactement reconnaissable à partir de la photo téléchargée, mais change complètement l'environnement pour [lieu]. Fais en sorte que l'éclairage, les ombres, la perspective, les reflets, l'atmosphère, les vêtements, l'interaction avec le décor et l'arrière-plan correspondent naturellement au nouveau lieu.\nPhotographie-moi comme si j'y étais réellement, avec un appareil photo DSLR professionnel.\nPréserve la texture réaliste de ma peau et mes détails faciaux naturels."
+      },
+      {
+        "id": "ess-headshot",
+        "title": "Photo pro (headshot)",
+        "source": "@ia.boss.officiel",
+        "text": "Transforme ma photo téléchargée en un portrait professionnel adapté pour LinkedIn, un site d'entreprise ou une marque personnelle.\nGarde mon visage, ma structure faciale, mon teint, ma coiffure et mon identité reconnaissables et naturels.\nUtilise un éclairage professionnel et propre, une texture de peau réaliste, une expression naturelle, une séparation subtile de l'arrière-plan, des détails faciaux nets et une composition soignée.\nFais en sorte que cela ressemble à un véritable portrait pris par un photographe professionnel avec un appareil haut de gamme."
+      }
+    ]
+  },
+  {
+    "id": "artistique",
+    "name": "Effets artistiques",
+    "emoji": "🌪️",
+    "color": "#c2410c",
+    "prompts": [
+      {
+        "id": "art-ame",
+        "title": "Énergie de l'âme (fumée & feuilles)",
+        "source": "@dhinovwirandhi (traduit de l'indonésien)",
+        "text": "Silhouette of a man matching the reference face (height ... cm, weight ... kg), partly dissolving into a dynamic explosion of colorful smoke, autumn leaves and abstract particles. This \"soul energy\" trail follows the colors of his clothing — bright orange, teal and earthy brown — bursting out from his back and legs. A small dark bird silhouette is seen flying away from the smoke trail, emphasizing the theme of freedom.\n\nBackground & Lighting: Minimalist background split into two colors, showing soft blue-grey on the left side and bold deep orange on the right side. Soft, cinematic lighting highlights the fabric texture and the ethereal nature of the smoke.\n\nTechnical Style: Ultra-realistic surrealism, 8K resolution, high-fashion editorial aesthetic. The composition must keep sharp focus on the man's face and clothing, while the trail elements in the back have a fluid, painterly motion blur.\n\nMain Visual Elements: Color palette: striking contrast between warm orange and cool teal. Composition: low camera angle with a dynamic floating pose in mid-air that makes the subject look dominant and free. Theme: high-fashion editorial meets conceptual digital art.\n\nAspect ratio: 9:16.",
+        "format": "9:16"
+      },
+      {
+        "id": "art-vortex",
+        "title": "Vortex de feu & fumée",
+        "source": "@dhinovwirandhi (traduit de l'indonésien)",
+        "text": "Ultra-realistic full-body studio portrait of a rugged man (height ... cm, weight ... kg), standing and radiating a powerful aura in front of a clean, stark white background. He wears epic layered clothing: a heavy charcoal-grey trench coat with distressed texture details, paired with a dark knit sweater, a thick wool scarf, a jet-black beanie and brown tactical boots. The character shows a sharp stoic expression. Visual effect: his body silhouette merges dramatically with a dynamic vortex of ethereal orange fire and bluish smoke, rendered in a highly fluid and artistic double-exposure watercolor style. Add striking rim lighting to accentuate the edges of his silhouette and volumetric lighting on the swirl of smoke and fire, make sure the background is truly clean with no extra characters, and produce this masterpiece in super-sharp, cinematic 8K resolution. Aspect ratio 9:16.",
+        "format": "9:16"
+      },
+      {
+        "id": "art-moto",
+        "title": "Moto vintage à pleine vitesse",
+        "source": "@dhinovwirandhi (traduit de l'indonésien)",
+        "text": "Cinematic, high-fashion, ultra-realistic low-angle shot of a man with the face from the reference photo (height ... cm, weight ... kg), striking with a sharp and intense gaze, riding a classic (vintage) motorcycle at high speed straight toward the camera. He leans his body forward in an aggressive posture, his hands in jet-black leather gloves gripping the gleaming chrome handlebars. His dark hair is messy, blown by the wind and looks damp, giving a dramatic effect to this high-speed atmosphere. Wardrobe & Style: he wears a sleek, fitted black leather biker jacket, with contrasting silver zippers and stitching. Visual effects: add dramatic rim lighting to separate the subject from the background, volumetric late-afternoon sunlight rays, motion blur on the background to emphasize speed, and render in photorealistic 8K resolution with high sharpness. Aspect ratio 9:16.",
+        "format": "9:16"
+      },
+      {
+        "id": "art-soleil",
+        "title": "Soleil orange post-apo",
+        "source": "@dhinovwirandhi (traduit de l'indonésien)",
+        "text": "Ultra-realistic high-fashion editorial full-body portrait of a man matching the reference photo (height ... cm, weight ... kg), walking with full dominance and confidence straight toward the camera. He wears layered oversized post-apocalyptic streetwear, featuring an elegantly textured teal trench coat, a thick intricately patterned scarf, cargo trousers and tough military boots with bright orange laces. His look is sharpened by futuristic black sunglasses with blue lenses. Behind him looms a huge, solid, bright orange round sun as the main backdrop. Visual effects: apply dramatic rim lighting to highlight his body silhouette against the sun, epic volumetric lighting, high-level cinematic color contrast (between teal and orange), and render in super-detailed 8K resolution with a clean composition without background characters (no background characters). Aspect ratio 9:16.",
+        "format": "9:16"
+      }
+    ]
+  },
+  {
+    "id": "concepts",
+    "name": "Concepts créatifs",
+    "emoji": "💡",
+    "color": "#4338ca",
+    "prompts": [
+      {
+        "id": "conc-appli",
+        "title": "Sortir d'une appli",
+        "source": "@smarts.ai",
+        "text": "Using my uploaded photo as the exact face reference, create a surreal fashion editorial, 4:5. I sit on stone steps against a petrol-blue facade, emerging from a giant floating frosted-glass phone interface. My legs, shoes and one arm extend outside the preview into the foreground with realistic shadows. Original interface, abstract icons, no real app UI. Cool daylight, electric-blue glow, 45mm lens, realistic skin, photorealistic. No logos.",
+        "format": "4:5"
+      },
+      {
+        "id": "conc-puzzle",
+        "title": "Puzzle de vérification",
+        "source": "@smarts.ai",
+        "text": "Using my uploaded photo as the exact face reference, create a conceptual street-fashion ad, 4:5. I stand in an iridescent silver jacket in front of a pale concrete wall, partly covered by a huge floating white verification puzzle with a violet header and a 3x3 photo grid. Parts of my body show through tiles and some pieces break outside the card. Original wording and design. 40mm lens, photorealistic. No logos.",
+        "format": "4:5"
+      },
+      {
+        "id": "conc-scan",
+        "title": "Cadre de scan en ville",
+        "source": "@smarts.ai",
+        "text": "Using my uploaded photo as the exact face reference, create a cinematic city scene, 4:5. I stand still on a wet crosswalk at dusk while blurred commuters pass. A cyan scanning frame outlines my body with small crop windows for my bag, shoes and face, plus labels PERSON_01, MOOD: CALM, OUTFIT: TECHWEAR. Cyan and magenta reflections on wet asphalt, 35mm lens, photorealistic. No logos.",
+        "format": "4:5"
+      },
+      {
+        "id": "conc-nuancier",
+        "title": "Nuancier de couleurs",
+        "source": "@smarts.ai",
+        "text": "Using my uploaded photo as the exact face reference, create a fashion campaign photo, 4:5. I stand beside a stone planter in a sunlit plaza sipping iced coffee from a plain clear cup, while three tall floating paint-chip cards labeled Moss Green, Charcoal and Lime Zest hover beside me. Soft overcast light, rich greens, 40mm lens, realistic skin, photorealistic. No logos.",
+        "format": "4:5"
+      },
+      {
+        "id": "conc-immobile",
+        "title": "Immobile dans la foule",
+        "source": "@smarts.ai",
+        "text": "Using my uploaded photo as the exact face reference, create a cinematic street portrait, 4:5. I stand perfectly still and sharp in the middle of a busy avenue, calm gaze at the camera, while foreground and background passersby are heavily motion-blurred. Teal traffic lights, overcast light, shallow depth of field, 50mm lens, realistic skin, photorealistic. No text, no logos.",
+        "format": "4:5"
+      }
+    ]
+  },
+  {
+    "id": "feminin",
+    "name": "Portraits féminins",
+    "emoji": "💃",
+    "color": "#9d174d",
+    "prompts": [
+      {
+        "id": "fem-dos-nb",
+        "title": "Dos nu, noir & gris",
+        "source": "@prompts_photo (traduit du russe)",
+        "text": "Preserve appearance 100%. Do not change facial features or proportions. Black-and-grey, heavily darkened photo, grainy, with film texture. A woman in profile, head tilted back, eyes closed, calm and sensual facial expression. Hair full and voluminous, styled in a luxurious blowout. A hand rests elegantly on the neck. The back is bare, only the upper part visible. Light falls from the front, emphasizing the profile and the texture of the hair. Deep shadows, high contrast, dramatic mood. Minimalist background, light grey but heavily darkened. Flawless makeup: full lips outlined with pencil, with a light gloss, long fluffy lashes, sharp winged eyeliner, accentuated cheekbones. Long square nails. Cinematic style, hyperrealism, high resolution."
+      },
+      {
+        "id": "fem-passage",
+        "title": "Robe blanche, passage piéton",
+        "source": "@prompts_photo (traduit du russe)",
+        "text": "Preserve appearance 100%. Do not change facial features or proportions. A woman with straight, smooth hair, the ends curled inward, a couple of strands falling on the face. With one hand she adjusts her hair, which flutters slightly from the movement. Makeup with winged liner and cat-eye lashes, glossy lips, radiant face. She wears a white fitted mini dress. In motion, the woman walks across the pedestrian crossing of a busy megacity street. The dress emphasizes the figure. In the background, cars stopped at a traffic light. The woman casually turns toward the camera, paparazzi effect. Daylight, dark frame, high contrast. Playful look into the camera. Candid phone shot with digital noise, 50 mm."
+      },
+      {
+        "id": "fem-satin",
+        "title": "Robe satin, canapé beige",
+        "source": "@prompts_photo (traduit du russe)",
+        "text": "Preserve appearance 1:1. The photo is the only reference. Do not change facial features or proportions. A woman sits in a relaxed, elegant pose on a light beige sofa. She wears a cream satin slip dress with thin straps and a side slit, legs crossed, right over left. Voluminous wavy hair falls loosely on the shoulders. Lightly tanned skin, long lashes, light gloss on the lips. The right hand rests on the back of the sofa, the left touches the neck and hair. A large ring on the finger, a thin bracelet on the wrist, an anklet on the ankle. Light beige square manicure. Background: thick brown curtains and dark brown cushions. Cool beige-brown palette. Emphasis on the sheen of the fabric and the silhouette, soft shadows, glamorous atmosphere. Bright hard flash. Shot from slightly above, close-up portrait."
+      },
+      {
+        "id": "fem-plage-nb",
+        "title": "Plage en noir & blanc",
+        "source": "@prompts_photo (traduit du russe)",
+        "text": "Preserve appearance 100%: do not change facial features or proportions. Black-and-white photograph shot on an iPhone camera: a woman stands on the seashore with her back to the camera, looking over her shoulder, one arm lowered along the body, the other softly bent. In the background, a calm sea and a wide, beautiful cloudy sky, low horizon. She wears a fitted black midi slip dress with thin straps, minimalist. Hairstyle: romantic cascade — hair loose, styled in voluminous layers with soft waves creating movement and lightness; strands falling naturally, without stiff hold. Makeup: matte lipstick. Thin-framed sunglasses slightly lowered on the nose."
       }
     ]
   }
