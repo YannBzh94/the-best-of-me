@@ -1,5 +1,5 @@
 // Service worker : l'appli s'ouvre même hors connexion (la génération, elle, nécessite internet).
-const CACHE = "tbom-v9";
+const CACHE = "tbom-v10";
 const SHELL = ["./", "index.html", "themes.js", "manifest.json", "icon-192.png", "icon-512.png", "icon-maskable-192.png", "icon-maskable-512.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener("activate", e => {

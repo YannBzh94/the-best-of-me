@@ -2,7 +2,7 @@
 // Chaque prompt peut être modifié, supprimé ou complété depuis l'appli.
 // "source" crédite le photographe / créateur. « prompt original » = rédigé pour l'appli dans ce style.
 // Augmenter SEED_VERSION ajoute les nouveaux exemples chez les utilisateurs existants sans toucher à leurs prompts.
-window.SEED_VERSION = 6;
+window.SEED_VERSION = 7;
 window.SEED_THEMES = [
   {
     "id": "cinema",
@@ -10,6 +10,13 @@ window.SEED_THEMES = [
     "emoji": "🎬",
     "color": "#c2410c",
     "prompts": [
+      {
+        "id": "cinema-pluie-fenetre",
+        "title": "Fenêtre sous la pluie",
+        "source": "@photo_tvoritel",
+        "text": "Using my uploaded selfie, recreate me in the composition and visual concept of the reference photo. Preserve my exact identity, face, eyes, skin texture, beard, hairstyle, proportions, and natural imperfections. Do not beautify or alter my appearance.\n\nCreate a photorealistic 9:16 cinematic portrait of me standing close to a dark, rain-covered window, wearing a naturally wrinkled white linen shirt with an open collar. My body faces the glass while my head turns slightly toward the light, gazing intensely outside with a calm, masculine, introspective expression. Add a realistic rain-distorted reflection in the window.\n\nUse dramatic low-key natural light, illuminating one eye and side of my face while the rest fades into deep shadow. Moody desaturated tones, cold gray and muted olive undertones, subtle haze, film grain, and soft halation.\n\n85mm f/1.8 cinematic lens look, shallow depth of field, ARRI-inspired tonality, ultra-photorealistic. Make it feel like a powerful frame from a high-budget psychological drama, not an AI-generated portrait.",
+        "format": "9:16"
+      },
       {
         "id": "cinema-billard",
         "title": "Le coup de billard",
@@ -98,6 +105,12 @@ window.SEED_THEMES = [
     "emoji": "📸",
     "color": "#334155",
     "prompts": [
+      {
+        "id": "studio-chemise-luxe",
+        "title": "Chemise blanche, lumière orange",
+        "source": "@photo_tvoritel",
+        "text": "Transform my photo into a high-end luxury studio portrait while preserving my exact identity, facial features, hairstyle, facial hair, body proportions, skin tone, and natural expression. Do not change who I am.\n\nDress me in a perfectly tailored fitted white dress shirt with the sleeves buttoned and subtle premium fabric texture. Pair it with tailored black trousers, a luxury black leather watch, and minimal accessories for a sophisticated, timeless look.\n\nPose me naturally while adjusting the cuff of my left sleeve with my right hand. Rotate my body about 45 degrees away from the camera, but keep my head turned slightly toward the camera, making confident eye contact or looking just beside the lens. The pose should feel relaxed, masculine, and effortless, like an editorial fashion campaign.\n\nPlace me against a completely black studio background with no visible distractions.\n\nLight the scene with dramatic cinematic studio lighting: a warm orange rim light outlining the back and right side of the body, combined with a soft red accent light on the opposite side. Add a large soft key light from the front-left to illuminate the face naturally while maintaining strong contrast and sculpting the jawline and facial features.\n\nThe shirt should display realistic folds, crisp tailoring, and subtle highlights. Skin texture should remain completely natural with realistic pores and facial detail.\n\nStyle: luxury men's fashion editorial, Tom Ford campaign, Hugo Boss, GQ magazine, cinematic portrait photography, premium studio lighting, elegant, masculine, minimalistic.\n\nCamera settings: 85mm lens, f/1.8, eye-level composition, shallow depth of field, ultra-sharp focus on the eyes, HDR, realistic skin tones, photorealistic, 8K, ultra-detailed.\n\nNegative prompt (avoid): female, side profile only, looking away, cartoon, anime, CGI, unrealistic muscles, oversized body, blurry, low quality, plastic skin, bad anatomy, extra fingers, duplicate limbs, distorted face, watermark, logo, text, noise, oversaturated colors, poorly fitted clothing."
+      },
       {
         "id": "studio-echecs-citation",
         "title": "Échecs & citation (N&B)",
@@ -297,6 +310,13 @@ window.SEED_THEMES = [
     "emoji": "🔤",
     "color": "#475569",
     "prompts": [
+      {
+        "id": "typo-couverture",
+        "title": "Couverture de magazine (à personnaliser)",
+        "source": "@photo_tvoritel (adapté)",
+        "text": "Use my uploaded photo as the exact identity reference. Preserve my face, hairstyle, skin tone, facial hair, body proportions, and all recognizable features with high fidelity.\n\nCreate an ultra-premium luxury editorial fashion campaign featuring [MON PRÉNOM NOM] ([MON PSEUDO]), [MON MÉTIER / MA PASSION]. Inspired by the visual language of Fear of God Essentials, COS Studio, Represent, Saint Laurent, and modern luxury fashion editorials.\n\nShow me confidently walking toward the camera with a relaxed stride and calm expression, wearing an oversized heavyweight white hoodie, black wide-leg cargo trousers, and clean white sneakers.\n\nShot as commercial fashion photography on an 85mm lens (f/2.2) with realistic proportions, soft background separation, cinematic studio lighting, warm rim light, deep elegant shadows, and a seamless charcoal-to-dark-grey backdrop with subtle haze.\n\nDesign the layout like a luxury magazine cover. Place a massive vertical \"[MON PSEUDO]\" behind the subject in bold condensed typography with an ivory distressed texture. Add minimal Swiss-inspired editorial graphics, premium serif and sans-serif typography, and elegant microcopy such as \"CREATE WITHOUT LIMITS\", \"VISUAL STORYTELLER\", and \"CRAFTED WITH PURPOSE.\"\n\nInclude:\n\n* [MON PRÉNOM NOM]\n* [MON PSEUDO]\n* [MON MÉTIER • MA PASSION]\n* [MA VILLE • MON PAYS]\n\nFinish as an ultra-photorealistic, high-end fashion campaign with timeless luxury aesthetics, premium matte tones, and magazine-cover quality.",
+        "format": "4:5"
+      },
       {
         "id": "typo-x",
         "title": "Portrait dans un X",
