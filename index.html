@@ -150,13 +150,17 @@ a{color:var(--gold)}
       <textarea id="promptText" placeholder="Choisis un exemple dans Thèmes, ou colle ici un prompt."></textarea>
       <label class="lbl">Format</label>
       <div class="chips" id="formats" style="margin-bottom:0"></div>
+      <div class="row" style="margin-top:8px">
+        <button class="btn small" id="btnClaude">🪄 Améliorer le prompt avec Claude</button>
+        <button class="btn small" id="btnPaste">📋 Coller</button>
+      </div>
       <div class="row" style="margin-top:14px">
-        <button class="btn primary grow" id="btnFree">🆓 Envoyer à Gemini (gratuit)</button>
+        <button class="btn primary grow" id="btnFree">🆓 Envoyer à une IA (gratuit)</button>
       </div>
       <div class="row" style="margin-top:8px">
         <button class="btn grow" id="btnGen">✨ Générer ici (clé API)</button>
       </div>
-      <p class="small" style="margin:8px 2px 0">Gratuit : tes photos et le prompt sont envoyés ensemble à l'appli Gemini (ou ChatGPT) ; tu n'as qu'à la choisir dans la liste de partage.</p>
+      <p class="small" style="margin:8px 2px 0">Gratuit : choisis une IA (Gemini, ChatGPT, Meta AI, Copilot, Grok…) ; tes photos et le prompt lui sont envoyés ensemble.</p>
       <div class="row" style="margin-top:8px">
         <button class="btn small ghost" id="btnSavePrompt">💾 Enregistrer ce prompt dans un thème</button>
       </div>
@@ -500,41 +504,108 @@ async function generate() {
 }
 $("#btnGen").onclick = generate;
 
-/* ---------- Mode gratuit : partage photos + prompt vers l'appli Gemini ---------- */
-async function shareToAI() {
-  const photos = S.photos.filter(p => S.selPhotos.has(p.id));
-  const userPrompt = $("#promptText").value.trim();
+/* ---------- Mode gratuit : partage photos + prompt vers une appli d'IA ---------- */
+// Liste indicative : capacités et quotas gratuits variables selon les pays et les versions.
+const FREE_AIS = [
+  { id: "gemini",  name: "Gemini",            emoji: "✨", url: "https://gemini.google.com/app", note: "Google (Nano Banana)" },
+  { id: "chatgpt", name: "ChatGPT",           emoji: "💬", url: "https://chatgpt.com/",          note: "OpenAI" },
+  { id: "metaai",  name: "Meta AI",           emoji: "🔵", url: "https://www.meta.ai/",          note: "Aussi dans WhatsApp et Instagram" },
+  { id: "copilot", name: "Microsoft Copilot", emoji: "🪟", url: "https://copilot.microsoft.com/", note: "Microsoft" },
+  { id: "grok",    name: "Grok",              emoji: "⚡", url: "https://grok.com/",              note: "xAI" },
+  { id: "autre",   name: "Autre appli",       emoji: "📲", url: "",                               note: "Toute appli de ta liste de partage" },
+];
+const selectedPhotos = () => S.photos.filter(p => S.selPhotos.has(p.id));
+const photoFiles = photos => photos.map((p, i) => new File([dataUrlToBlob(p.data)], `photo-${i + 1}.jpg`, { type: "image/jpeg" }));
+async function copyText(t) { try { await navigator.clipboard.writeText(t); return true; } catch { return false; } }
+
+function openFreePicker() {
+  const photos = selectedPhotos(), userPrompt = $("#promptText").value.trim();
   if (!photos.length) return toast("Sélectionne au moins une photo");
   if (!userPrompt) return toast("Le prompt est vide");
-  const full = "Génère une image à partir de mes photos jointes.\n\n" + buildPrompt(userPrompt, photos.length, S.format);
-  // 1) Copie du prompt (filet de sécurité si l'appli cible ne reprend pas le texte)
-  let copied = false;
-  try { await navigator.clipboard.writeText(full); copied = true; } catch {}
-  // 2) Partage des photos + du texte en une seule fois
-  const files = photos.map((p, i) => new File([dataUrlToBlob(p.data)], `photo-${i + 1}.jpg`, { type: "image/jpeg" }));
+  openModal(`<h3>Envoyer à quelle IA ?</h3>
+    <p class="small">Appuie sur une IA : la liste de partage s'ouvre, choisis-y la même appli. Tes photos et le prompt partent ensemble (le prompt est aussi copié).</p>
+    <div id="aiList" style="display:grid;gap:8px;margin-top:10px">
+      ${FREE_AIS.map(a => `<div class="row" style="background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:10px">
+        <button class="btn primary grow" data-ai="${a.id}" style="text-align:left">${a.emoji} ${a.name}<br><span style="font-weight:400;font-size:12px">${a.note}</span></button>
+        ${a.url ? `<button class="btn small" data-web="${a.id}" title="Ouvrir le site">🌐 Site</button>` : ""}
+      </div>`).join("")}
+    </div>
+    <p class="small" style="margin-top:10px">🌐 Site : ouvre la version web ; le prompt est copié, il faudra y joindre tes photos toi-même.</p>
+    <div class="row" style="margin-top:12px"><div class="grow"></div><button class="btn ghost" id="aiClose">Fermer</button></div>`);
+  $("#aiClose").onclick = closeModal;
+  $("#sheet").querySelectorAll("[data-ai]").forEach(b => b.onclick = () => shareToAI(FREE_AIS.find(a => a.id === b.dataset.ai)));
+  $("#sheet").querySelectorAll("[data-web]").forEach(b => b.onclick = async () => {
+    const ai = FREE_AIS.find(a => a.id === b.dataset.web);
+    await copyText(fullFreePrompt()); window.open(ai.url, "_blank", "noopener");
+    toast(`Prompt copié : colle-le dans ${ai.name} et joins tes photos`);
+  });
+}
+function fullFreePrompt() {
+  const photos = selectedPhotos();
+  return "Génère une image à partir de mes photos jointes.\n\n" + buildPrompt($("#promptText").value.trim(), photos.length, S.format);
+}
+async function shareToAI(ai) {
+  const full = fullFreePrompt(), copied = await copyText(full), files = photoFiles(selectedPhotos());
   if (navigator.canShare && navigator.canShare({ files })) {
     try {
       await navigator.share({ files, text: full, title: "The Best of Me" });
-      toast(copied ? "Si le texte n'apparaît pas dans Gemini : appui long → Coller" : "Partage effectué");
-      setTimeout(showFreeHelp, 400);
+      closeModal();
+      toast(copied ? `Si le texte manque dans ${ai.name} : appui long → Coller` : "Partage effectué");
+      setTimeout(() => showFreeHelp(ai), 400);
     } catch (e) { if (e && e.name !== "AbortError") toast("Partage impossible : " + e.message); }
   } else {
-    toast(copied ? "Partage de fichiers non disponible : prompt copié, joins tes photos dans Gemini" : "Partage non disponible sur ce navigateur");
+    toast(copied ? "Partage de fichiers non disponible : prompt copié, joins tes photos dans l'appli" : "Partage non disponible sur ce navigateur");
   }
 }
-function showFreeHelp() {
+function showFreeHelp(ai) {
   if (localStorage.getItem("tbom.freehelp")) return;
-  openModal(`<h3>Dans l'appli Gemini</h3>
+  openModal(`<h3>Dans ${esc(ai.id === "autre" ? "l'appli choisie" : ai.name)}</h3>
     <ul class="tips" style="color:var(--text)">
-      <li>Tes photos sont déjà jointes et le prompt est collé : appuie sur Envoyer.</li>
+      <li>Tes photos sont jointes et le prompt est collé : appuie sur Envoyer.</li>
       <li>Si le texte manque : appui long dans la zone de saisie → <b>Coller</b> (il est dans ton presse-papiers).</li>
-      <li>Une fois l'image créée : appui long dessus → Télécharger. Tu peux ensuite la mettre en vignette du thème depuis ta galerie de photos.</li>
+      <li>Une fois l'image créée : appui long dessus → Télécharger.</li>
     </ul>
     <div class="row" style="margin-top:14px"><button class="btn ghost" id="hNo">Ne plus afficher</button><div class="grow"></div><button class="btn primary" id="hOk">OK</button></div>`);
   $("#hOk").onclick = closeModal;
   $("#hNo").onclick = () => { localStorage.setItem("tbom.freehelp", "1"); closeModal(); };
 }
-$("#btnFree").onclick = shareToAI;
+$("#btnFree").onclick = openFreePicker;
+
+/* ---------- Améliorer le prompt avec Claude ---------- */
+async function improveWithClaude() {
+  const userPrompt = $("#promptText").value.trim();
+  if (!userPrompt) return toast("Le prompt est vide");
+  const photos = selectedPhotos();
+  const ask = `Améliore ce prompt de génération d'image pour qu'il corresponde à la personne sur mes photos jointes.
+- Adapte le genre, la tenue, la coiffure et les accessoires à cette personne si le prompt décrit quelqu'un d'autre.
+- Remplace les champs entre crochets ou en pointillés ([lieu], [tenue], ... cm, ... kg) par des choix pertinents.
+- Supprime les incohérences et les références à des personnes réelles ou à des marques.
+- Garde la consigne de préserver exactement le visage et l'identité.
+- Format souhaité : ${S.format}.
+Réponds uniquement avec le prompt final, en anglais, sans aucun commentaire.
+
+PROMPT :
+${userPrompt}`;
+  const copied = await copyText(ask);
+  const files = photos.length ? photoFiles(photos) : [];
+  const data = files.length && navigator.canShare && navigator.canShare({ files }) ? { files, text: ask } : { text: ask };
+  if (navigator.share) {
+    try {
+      await navigator.share(data);
+      toast("Dans Claude : envoie, copie la réponse, puis reviens appuyer sur 📋 Coller");
+    } catch (e) { if (e && e.name !== "AbortError") toast("Partage impossible : " + e.message); }
+  } else {
+    toast(copied ? "Demande copiée : colle-la dans l'appli Claude" : "Partage non disponible");
+  }
+}
+$("#btnClaude").onclick = improveWithClaude;
+$("#btnPaste").onclick = async () => {
+  try {
+    const t = (await navigator.clipboard.readText()).trim();
+    if (!t) return toast("Presse-papiers vide");
+    $("#promptText").value = t; if (S.current) S.current.edited = true; toast("Prompt collé ✔");
+  } catch { toast("Autorise l'accès au presse-papiers, ou appui long dans la zone → Coller"); }
+};
 
 async function callGemini(key, model, prompt, photos, ar) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
